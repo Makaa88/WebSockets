@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+<head >
+  <title>SimpleChat</title>
+</head>
+
+<body>
+<script language="javascript" type="text/javascript">
+	var wsUri = getRootUri() + "/chat";
+	
+	function getRootUri()
+	{
+		return "ws://localhost:8081/WebSocketTest";
+	}
+	
+	function init(){
+		output = document.getElementById("output");
+		
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt){
+			onOpen(evt)
+		};
+		
+		websocket.onmessage = function(evt){
+			onMessage(evt)
+		};
+		
+		websocket.onerror = function(evt){
+			onError(evt)
+		};
+		
+		websocket.onclose = function(evt)
+		{
+			websocket.close();
+		};
+	}
+	
+	function onOpen(evt){
+		writeToScreen("Connected");
+	}
+	
+	function onMessage(evt){
+		writeToScreen(evt.data );
+	}
+	
+	function onError(evt){
+		writeToScreen("Error " + evt.data );
+	}
+	
+	function doSend(){
+		var message = document.getElementById("message").value;
+		websocket.send(message);
+	}
+	
+	function writeToScreen(message){
+		var pre = document.createElement("p");
+		pre.style.wordWrap="break-word";
+		pre.innerHTML = message;
+		output.appendChild(pre);
+		
+		document.getElementById("message").innerHTML = "";
+	}
+	
+	window.addEventListener("load", init, false);	
+</script>
+
+<div id="output"></div>
+
+<form method="post">
+	<table border="0">
+		<tbody>
+			<tr>
+				<td>Message:</td>
+				<td><input type="text" value="" id="message"/></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" value="WS Submit" onclick="doSend()"/></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+</body>
+</html>

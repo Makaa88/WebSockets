@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<head >
+   <title>DB handling</title>
+</head>
+
+<body>
+
+<script language="javascript" type="text/javascript">
+   var wsUri = getRootUri() + "/wsEndpoint";
+
+   function getRootUri()
+   {
+      return "ws://localhost:8081/WebSocketTest";
+   }
+
+   function init(){
+      table = document.getElementById("myTable");
+      websocket = new WebSocket(wsUri);
+      websocket.onopen = function(evt){
+         onOpen(evt)
+      };
+
+      websocket.onmessage = function(evt){
+         onMessage(evt)
+      };
+
+      websocket.onerror = function(evt){
+         onError(evt)
+      };
+   }
+
+   function onOpen(evt){
+      doSendInitMessage("Opening message");
+   }
+
+   function onMessage(evt){
+	      console.log(evt.data);
+      var data = JSON.parse(evt.data);
+	      
+	      for (var i = 0; i &lt; data.people.length; i++)
+	          {
+	             var row = table.insertRow(1);
+	             cell1 = row.insertCell(0).innerHTML = data.people[i].lname;
+	             cell1 = row.insertCell(1).innerHTML = data.people[i].fname;
+	             cell1 = row.insertCell(2).innerHTML = data.people[i].email;
+	           }
+   }
+
+   function onError(evt){
+      writeToScreen("Error " + evt.data );
+   }
+
+   function addPersonMessage(){
+	   var name = document.getElementById("name").value;
+	   var surname = document.getElementById("surname").value;
+	   var email = document.getElementById("email").value;
+	   
+	  var message = JSON.stringify({city: "Krakow", email: email, fname: name, lname: surname, tel: "123125532"});
+      websocket.send(message);
+   }
+   
+   function doSendInitMessage(message)
+   {
+	   websocket.send(message);
+   }
+
+   function writeToScreen(message){
+      var pre = document.createElement("p");
+      pre.style.wordWrap="break-word";
+      pre.innerHTML = message;
+      output.appendChild(pre);
+   }
+
+   window.addEventListener("load", init, false);
+</script>
+
+<form method="post">
+   <table border="0">
+      <tbody>
+      <tr>
+         <td>Name</td>
+         <td><input type="text" value="" id="name"/></td>
+      </tr>
+       <tr>
+         <td>Surname</td>
+         <td><input type="text" value="" id="surname"/></td>
+      </tr>
+       <tr>
+         <td>Email</td>
+         <td><input type="text" value="" id="email"/></td>
+      </tr>
+      <tr>
+         <td></td>
+         <td><input type="button" value="WS Submit" onclick="addPersonMessage()"/></td>
+      </tr>
+      </tbody>
+   </table>
+</form>
+
+<div id="output">
+   <table id="myTable">
+      <thead>
+      <tr>
+         <th>Surname</th>
+         <th>Name</th>
+         <th>email</th>
+      </tr>
+      </thead>
+      <tbody>
+      </tbody>
+   </table>
+</div>
+</body>
+</html>
