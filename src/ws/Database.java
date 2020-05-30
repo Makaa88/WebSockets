@@ -32,7 +32,7 @@ public class Database {
         }
         String url = "jdbc:postgresql://kandula.db.elephantsql.com:5432/rqjzyiwt";
         String username = "rqjzyiwt";
-        String password = "jjyt5X8sM6RdTpD10monHPrLDzMaVSES";
+        String password = "pass";
         try {
             conn = DriverManager.getConnection(url, username, password);
             // System.out.println("Connect to Database");
