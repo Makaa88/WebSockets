@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.event.ActionEvent;
 
 
 @ManagedBean (name  = "personBean")
@@ -66,6 +67,12 @@ public class Person {
         List<Person> people = baza.getPersonList();
         return people ;
     }
+    
+    public void savePerson(ActionEvent event)  {
+        Database baza = new Database() ;
+        baza.createPerson ( this.getPerson() ) ;
+        return ;
+     }
     
 
 }

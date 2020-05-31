@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<title>Lista</title>
+</head>
+
+<body>
+<script language="javascript" type="text/javascript">
+	var wsUri = getRootUri() + "/jsfEndpoint";
+	
+	function getRootUri()
+	{
+		return "ws://localhost:8081/WebSocketTest";
+	}
+	
+	function init(){
+		table=document.getElementById("j_idt2:table");
+		output = document.getElementById("output");
+		
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt){
+			onOpen(evt);
+		};
+		
+		websocket.onmessage = function(evt){
+			onMessage(evt)
+		};
+		
+		websocket.onerror = function(evt){
+			onError(evt)
+		};
+		
+		websocket.onclose = function(evt)
+		{
+			websocket.close();
+		};
+	}
+	
+	function onOpen(evt)
+	{
+		console.log("Connected");
+	}
+	
+	function onMessage(evt){
+		console.log("Reveoced ,essage");
+		writeToScreen(evt.data);
+	}
+	
+	
+	function writeToScreen(message){
+		var data = JSON.parse(message);
+		console.log(data);
+	      
+	             var row = table.insertRow(1);
+	             cell1 = row.insertCell(0).innerHTML = data.lname;
+	             cell1 = row.insertCell(1).innerHTML = data.fname;
+	             cell1 = row.insertCell(2).innerHTML = data.email;
+	}
+	
+	window.addEventListener("load", init, false);	
+</script>
+
+			<div id="content">
+				<h:form>
+					<h:dataTable id="table" value="#{personBean.people}" var="record" border="1">
+						<h:column>
+							<!-- kolumna zawiera nazwiska osob -->
+							
+							<h:outputText value="#{record.lname}" />
+						</h:column>
+						<h:column>
+							
+							<h:outputText value="#{record.fname}" />
+						</h:column>
+						<h:column>
+							<!-- kolumna zawiera e-mail osob -->
+							
+							<h:outputText value="#{record.email}" />
+						</h:column>
+
+					</h:dataTable>
+				</h:form>
+			</div>
+
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core" >
+<head>
+<title>Dodaj</title>
+</head>
+
+<body>
+
+	<div id="content">
+
+			<h:form>
+				<h:panelGrid columns="3"  frame="hsides" cellspacing="3" >
+				
+				<h:outputLabel for="fname" value="Imie" /> 
+				<h:inputText id="fname" value="#{personBean.fname}" 
+                    required="true" />
+				<h:message for="fname" />
+				
+				<h:outputLabel for="lname" value="Nazwisko" /> 
+				<h:inputText id="lname" value="#{personBean.lname}" 
+					required="true" />
+				<h:message for="lname" />
+				
+				<h:outputLabel for="city" value="Miasto" /> 
+				<h:inputText id="city" value="#{personBean.city}" />
+				<h:message for="city" />
+				
+				<h:outputLabel for="email" value="Email" /> 
+				<h:inputText id="email" value="#{personBean.email}" 
+                    required="true"   requiredMessage="#{errors.AddEmail}" >
+                </h:inputText>    
+				<h:message for="email" />
+				
+				<h:outputLabel for="tel" value="Telefon" /> 
+				<h:inputText id="tel" value="#{personBean.tel}" />
+				<h:message for="tel" />
+				
+				</h:panelGrid>
+				<h:commandButton value="Dodaj" action="list"  actionListener="#{personBean.savePerson}"  id="save"   />
+				
+			</h:form>
+
+	</div>
+
+
+
+</body>
+
+</html>

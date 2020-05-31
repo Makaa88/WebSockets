@@ -22,6 +22,8 @@ public class Database {
     private Statement stmt = null;
     private ResultSet rset = null;
     private List<Person> list = new ArrayList<Person>();
+    
+    private JSFEndpoint jsfEndpoint;
 
     public Database() {
         // System.out.println("Init managed Bean");
@@ -31,8 +33,8 @@ public class Database {
             System.out.println(ex.getMessage());
         }
         String url = "jdbc:postgresql://kandula.db.elephantsql.com:5432/rqjzyiwt";
-        String username = "rqjzyiwt";
-        String password = "pass";
+        String username = "user";
+        String password = "password";
         try {
             conn = DriverManager.getConnection(url, username, password);
             // System.out.println("Connect to Database");
@@ -83,6 +85,7 @@ public class Database {
             prestmt.setString(4, person.getCity());
             prestmt.setString(5, person.getTel());
             prestmt.executeUpdate();
+            jsfEndpoint.sendUpdate(person);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
