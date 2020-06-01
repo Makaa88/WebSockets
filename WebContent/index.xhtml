@@ -36,7 +36,6 @@
    }
 
    function onOpen(evt){
-      doSendInitMessage("Opening message");
    }
 
    function onMessage(evt){
@@ -65,10 +64,6 @@
       websocket.send(message);
    }
    
-   function doSendInitMessage(message)
-   {
-	   websocket.send(message);
-   }
 
    function writeToScreen(message){
       var pre = document.createElement("p");
